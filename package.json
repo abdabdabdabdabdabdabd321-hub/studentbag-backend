@@ -1,0 +1,9 @@
+{
+  "name": "studentbag-backend",
+  "version": "1.0.0",
+  "description": "Backend for StudentBag",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
