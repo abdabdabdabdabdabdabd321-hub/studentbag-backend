@@ -1,13 +1,22 @@
 const http = require("http");
+const Stripe = require("stripe");
 
-const server = http.createServer((req, res) => {
+const stripe = Stripe(
+    process.env.STRIPE_SECRET_KEY
+);
 
-    res.writeHead(200, {
-        "Content-Type": "text/plain"
-    });
+const server = http.createServer(
+    async (req, res) => {
 
-    res.end("StudentBag Backend Running");
-});
+        res.writeHead(200, {
+            "Content-Type": "text/plain"
+        });
+
+        res.end(
+            "StudentBag Backend Running"
+        );
+    }
+);
 
 server.listen(3000, () => {
 
