@@ -8,6 +8,79 @@ const stripe = Stripe(
 const server = http.createServer(
     async (req, res) => {
 
+        if (req.url === "/create-checkout-session") {
+
+            try {
+
+                const session =
+                    await stripe.checkout.sessions.create({
+
+                        mode: "subscription",
+
+                        line_items: [
+                            {
+                                price: "price_1TjOlFAMnQJ2HzVZH5X4TgbZ",
+                                quantity: 1
+                            }
+                        ],
+
+                        success_url:
+                            "https://studentbag-backend.onrender.com/success",
+
+                        cancel_url:
+                            "https://studentbag-backend.onrender.com/cancel"
+                    });
+
+                res.writeHead(200, {
+                    "Content-Type": "application/json"
+                });
+
+                res.end(
+                    JSON.stringify({
+                        url: session.url
+                    })
+                );
+
+                return;
+
+            } catch (error) {
+
+                res.writeHead(500, {
+                    "Content-Type": "text/plain"
+                });
+
+                res.end(error.message);
+
+                return;
+            }
+        }
+
+        if (req.url === "/success") {
+
+            res.writeHead(200, {
+                "Content-Type": "text/plain"
+            });
+
+            res.end(
+                "Payment Success"
+            );
+
+            return;
+        }
+
+        if (req.url === "/cancel") {
+
+            res.writeHead(200, {
+                "Content-Type": "text/plain"
+            });
+
+            res.end(
+                "Payment Cancelled"
+            );
+
+            return;
+        }
+
         res.writeHead(200, {
             "Content-Type": "text/plain"
         });
