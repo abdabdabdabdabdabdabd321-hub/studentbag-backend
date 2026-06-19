@@ -25,7 +25,7 @@ const server = http.createServer(
                         ],
 
                         success_url:
-                            "https://studentbag-backend.onrender.com/success",
+                            "studentbag://payment-success",
 
                         cancel_url:
                             "https://studentbag-backend.onrender.com/cancel"
@@ -53,19 +53,6 @@ const server = http.createServer(
 
                 return;
             }
-        }
-
-        if (req.url === "/success") {
-
-            res.writeHead(200, {
-                "Content-Type": "text/plain"
-            });
-
-            res.end(
-                "Payment Success"
-            );
-
-            return;
         }
 
         if (req.url === "/cancel") {
