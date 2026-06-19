@@ -25,7 +25,7 @@ const server = http.createServer(
                         ],
 
                         success_url:
-                            "studentbag://payment-success",
+                            "studentbag://success",
 
                         cancel_url:
                             "https://studentbag-backend.onrender.com/cancel"
