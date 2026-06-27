@@ -1,21 +1,40 @@
 const http = require("http");
 const Stripe = require("stripe");
+const querystring = require("querystring");
 
 const stripe = Stripe(
     process.env.STRIPE_SECRET_KEY
 );
 
-const server = http.createServer(
-    async (req, res) => {
+const server = http.createServer(async (req, res) => {
 
-        if (req.url === "/create-checkout-session") {
+    if (
+        req.url === "/create-checkout-session" &&
+        req.method === "POST"
+    ) {
+
+        let body = "";
+
+        req.on("data", chunk => {
+            body += chunk;
+        });
+
+        req.on("end", async () => {
 
             try {
+
+                const data =
+                    querystring.parse(body);
+
+                const email =
+                    data.email;
 
                 const session =
                     await stripe.checkout.sessions.create({
 
                         mode: "subscription",
+
+                        customer_email: email,
 
                         line_items: [
                             {
@@ -41,46 +60,33 @@ const server = http.createServer(
                     })
                 );
 
-                return;
-
             } catch (error) {
 
-                res.writeHead(500, {
-                    "Content-Type": "text/plain"
-                });
+                res.writeHead(500);
 
                 res.end(error.message);
-
-                return;
             }
-        }
-
-        if (req.url === "/cancel") {
-
-            res.writeHead(200, {
-                "Content-Type": "text/plain"
-            });
-
-            res.end(
-                "Payment Cancelled"
-            );
-
-            return;
-        }
-
-        res.writeHead(200, {
-            "Content-Type": "text/plain"
         });
 
-        res.end(
-            "StudentBag Backend Running"
-        );
+        return;
     }
-);
+
+    if (req.url === "/cancel") {
+
+        res.writeHead(200);
+
+        res.end("Payment Cancelled");
+
+        return;
+    }
+
+    res.writeHead(200);
+
+    res.end("StudentBag Backend Running");
+});
 
 server.listen(3000, () => {
 
-    console.log(
-        "Server running on port 3000"
-    );
+    console.log("Server running on port 3000");
+
 });
