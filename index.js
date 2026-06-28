@@ -29,6 +29,8 @@ const server = http.createServer(async (req, res) => {
                 const email =
                     data.email;
 
+                console.log("Email:", email);
+
                 const session =
                     await stripe.checkout.sessions.create({
 
