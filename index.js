@@ -52,6 +52,9 @@ const server = http.createServer(async (req, res) => {
                             "https://studentbag-backend.onrender.com/cancel"
                     });
 
+                console.log("Session Created");
+                console.log(session.id);
+
                 res.writeHead(200, {
                     "Content-Type": "application/json"
                 });
